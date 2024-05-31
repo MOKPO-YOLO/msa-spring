@@ -16,9 +16,14 @@
 		GROUP BY TO_CHAR(WORK_AT, 'MM')
 	</select>
 	
-	<select id="boardContent" resultType="com.smhrd.entity.Board" parameterType="int">
-		SELECT * FROM BOARD WHERE IDX = #{idx}
+	<!-- Detection테이블데이터로 알림사항 전체보기 -->
+	<select id="detectionalarmList" resultType="com.smhrd.entity.Detection">
+		SELECT * FROM DETECTION 
+        ORDER BY DETECTION_DATE DESC
 	</select>
+	
+	
+	
 	
 	<insert id="boardInsert" parameterType="com.smhrd.entity.Board">
 		INSERT INTO BOARD(TITLE,CONTENT,WRITER) VALUES(#{title},#{content},#{writer})

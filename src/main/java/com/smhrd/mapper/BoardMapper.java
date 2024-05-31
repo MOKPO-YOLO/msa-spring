@@ -4,6 +4,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.smhrd.entity.Board;
+import com.smhrd.entity.Detection;
 import com.smhrd.entity.MonthlySum;
 import com.smhrd.entity.Notice;
 import com.smhrd.entity.Workload;
@@ -18,7 +19,11 @@ public interface BoardMapper {
 	
 	// 위해물품 작업량 전체보기
 	public List<MonthlySum> workloadList(); 
+	
+	// Detection테이블데이터로 알림사항 전체보기
+	public List<Detection> detectionalarmList(); 
 
+	
 	public Board boardContent(int idx);
 
 	public void boardInsert(Board vo);

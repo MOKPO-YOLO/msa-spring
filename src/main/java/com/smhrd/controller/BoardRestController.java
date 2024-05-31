@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.smhrd.entity.Board;
+import com.smhrd.entity.Detection;
 import com.smhrd.entity.Member;
 import com.smhrd.entity.MonthlySum;
 import com.smhrd.entity.Notice;
@@ -48,7 +49,7 @@ public class BoardRestController {
 		}
 		
 		
-		// 위해물품 작업량 전체보기
+		// 위해물품 월별합산 전체 작업량보기
 		@GetMapping("/workloadall")  //  /notice/workloadall
 		public List<MonthlySum> workloadList(){
 			System.out.println("[위해물품 작업량 전체보기]");
@@ -58,6 +59,8 @@ public class BoardRestController {
 			
 			return workloadList;
 		}
+		
+		
 		
 		
 		

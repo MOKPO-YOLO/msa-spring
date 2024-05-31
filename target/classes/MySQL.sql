@@ -28,6 +28,7 @@ select * from COMPANY;
 select * from Notice;
 select * from WORKLOAD;
 select * from MEMBER;
+select * from DETECTION;
 
 select * from COMPANY where IDENTIFI_ID='123456';
 
@@ -71,7 +72,18 @@ VALUES('test2', '2024-02-22', 160, 'Y');
 
 
 
+INSERT INTO DETECTION (MEMBER_ID, DETECTION_NAME, DETECTION_DATE, DETECTION_FILE)
+VALUES ('test2', 'Explosives','2024-05-12', 'file12.txt');
+
+
+
 SELECT * FROM WORKLOAD ORDER BY WORK_AT DESC;
+
+
+-- DETECTION 테이블 최신날짜순으로 정렬후 가져옴.
+SELECT * 
+FROM DETECTION 
+ORDER BY DETECTION_DATE DESC;
 
 
 -- 트리거 상태 확인
