@@ -11,8 +11,9 @@
 	<select id="workloadList" resultType="com.smhrd.entity.MonthlySum">
 		SELECT
 		    TO_CHAR(WORK_AT, 'MM') AS month,
-		    SUM(WORK_NUM) AS total_work
+		    COUNT(*) AS total_y
 		FROM WORKLOAD
+		WHERE WORK_PRESENCE = 'Y'
 		GROUP BY TO_CHAR(WORK_AT, 'MM')
 	</select>
 	
@@ -23,11 +24,29 @@
 	</select>
 	
 	
+	<!-- 모든 회원정보 list불러오기. -->
+	<select id="getMemberAll" resultType="com.smhrd.entity.Member">
+		SELECT * FROM MEMBER 
+        ORDER BY JOINED_AT DESC
+	</select>
 	
-	
-	<insert id="boardInsert" parameterType="com.smhrd.entity.Board">
-		INSERT INTO BOARD(TITLE,CONTENT,WRITER) VALUES(#{title},#{content},#{writer})
+		
+	<!-- 실시간 분석 - 위해물품 탐지시 stop 일어난뒤 DB Detection테이블에 insert 기능 -->
+	<insert id="detectionInsert" parameterType="com.smhrd.entity.Detection">
+		INSERT INTO DETECTION(DETECTION_IDX,MEMBER_ID,DETECTION_NAME,DETECTION_FILE)
+		VALUES(#{DETECTION_IDX},#{MEMBER_ID},#{DETECTION_NAME},#{DETECTION_FILE})
 	</insert>
+	
+	<!-- 실시간 분석 - 위해물품 탐지시 stop 일어난뒤 DB Workload테이블에 insert 기능 -->
+	<insert id="workloadInsert" parameterType="com.smhrd.entity.Workload">
+		INSERT INTO WORKLOAD(MEMBER_ID,WORK_PRESENCE)
+		VALUES(#{MEMBER_ID},#{WORK_PRESENCE})
+	</insert>
+	
+	
+	
+	
+	
 	
 	<delete id="boardDelete" parameterType="int">
 		DELETE FROM BOARD WHERE IDX = #{idx}

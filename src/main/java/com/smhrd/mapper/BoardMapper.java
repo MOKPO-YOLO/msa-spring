@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.smhrd.entity.Board;
 import com.smhrd.entity.Detection;
+import com.smhrd.entity.Member;
 import com.smhrd.entity.MonthlySum;
 import com.smhrd.entity.Notice;
 import com.smhrd.entity.Workload;
@@ -22,12 +23,22 @@ public interface BoardMapper {
 	
 	// Detection테이블데이터로 알림사항 전체보기
 	public List<Detection> detectionalarmList(); 
+	
+	// Detection테이블데이터로 알림사항 전체보기
+	public List<Member> getMemberAll(); 
 
+	// 실시간 분석 - 위해물품 탐지시 stop 일어난뒤 DB Detection테이블에 insert 기능
+	public void detectionInsert(Detection detec);
+	
+	// 실시간 분석 - 위해물품 탐지시 stop 일어난뒤 DB Workload테이블에 insert 기능
+	public void workloadInsert(Workload workloadDto);
+	
+	
+	
+	
 	
 	public Board boardContent(int idx);
-
-	public void boardInsert(Board vo);
-
+	
 	public void boardDelete(int idx);
 
 	public void boardUpdate(Board vo);

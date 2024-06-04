@@ -12,7 +12,7 @@ import lombok.ToString;
 public class MonthlySum {
 	
 	private String month;
-	private int total_work;
+	private int total_y;
 	
 
 }

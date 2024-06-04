@@ -64,11 +64,9 @@ public class BoardRestController {
 		
 		
 		
-		// 게시글 등록하기
-		@PostMapping("/new")
-		public void boardInsert(Board board) {
-			mapper.boardInsert(board);
-		}
+		
+	
+		
 		
 		// 게시글 상세보기
 //		@GetMapping("/{idx}") // board/{idx}

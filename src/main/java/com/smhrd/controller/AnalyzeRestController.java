@@ -2,6 +2,7 @@ package com.smhrd.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -16,8 +17,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-
+import com.smhrd.entity.Board;
+import com.smhrd.entity.Company;
 import com.smhrd.entity.Detection;
+import com.smhrd.entity.Member;
+import com.smhrd.entity.Workload;
 import com.smhrd.mapper.BoardMapper;
 
 // 비동기 방식만 가능
@@ -34,6 +38,9 @@ public class AnalyzeRestController {
 		@Autowired
 		private BoardMapper mapper;
 		
+		private Member memberDto;
+		private Workload workloadDto;		
+		
 
 		// Detection테이블데이터로 알림사항 전체보기
 		@GetMapping("/alarm") //  /detection/alarm
@@ -45,6 +52,45 @@ public class AnalyzeRestController {
 			return detectionalarmList;
 		}
 		 
+		
+		// 실시간 분석 - 돌릴때마다 정상탐지물품도 Workload테이블에 insert해줌.
+		@PostMapping("/normal")   //  /detection/normal로 요청.
+		public void normalWorkloadInsert (Workload normalWorkload, HttpSession session) {
+			// 로그인된 회원의 사번을 memberDto의 MEMBER_ID에 넣어줌.
+			Company loginMem = (Company) session.getAttribute("mem");
+			memberDto.setMEMBER_ID(loginMem.getIDENTIFI_ID());
+			
+			// Workload테이블에 MEMBER_ID가 필요함.
+			normalWorkload.setMEMBER_ID(memberDto.getMEMBER_ID());
+			normalWorkload.setWORK_PRESENCE("N");
+			
+			// DB INSET
+			mapper.workloadInsert(workloadDto);
+		}
+		
+		
+		
+		
+		// 실시간 분석 - 위해물품 탐지시 stop 일어난뒤 DB(DETECTION, WORKLOAD)테이들에 동시에 insert 기능
+		@PostMapping("/stop")    //  /detection/stop로 요청.
+		public void detectionInsert (Detection detec, HttpSession session) {
+			// 로그인된 회원의 사번을 memberDto의 MEMBER_ID에 넣어줌.
+			Company loginMem = (Company) session.getAttribute("mem");
+			memberDto.setMEMBER_ID(loginMem.getIDENTIFI_ID());
+			
+			// Detection테이블과, Workload테이블에 MEMBER_ID가 필요함. 
+			detec.setMEMBER_ID(memberDto.getMEMBER_ID());
+			workloadDto.setMEMBER_ID(memberDto.getMEMBER_ID());
+			workloadDto.setWORK_PRESENCE("Y");
+			
+			// DB INSET
+			mapper.detectionInsert(detec);
+			mapper.workloadInsert(workloadDto);
+		}
+		
+		
+		
+		
 		
 	
 	

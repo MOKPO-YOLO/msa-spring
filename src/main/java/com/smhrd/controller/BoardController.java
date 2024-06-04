@@ -16,6 +16,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.smhrd.entity.Board;
+import com.smhrd.entity.Member;
+import com.smhrd.entity.MonthlySum;
 import com.smhrd.entity.Notice;
 import com.smhrd.entity.SendToFastApiDto;
 import com.smhrd.entity.Workload;
@@ -49,6 +51,8 @@ public class BoardController {
 		
 		return fastApiService.sendToFastapi(dto);
 	}
+		
+	
 	
 	
 	

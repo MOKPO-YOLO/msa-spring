@@ -1,5 +1,7 @@
 package com.smhrd.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -19,6 +22,7 @@ import com.oreilly.servlet.MultipartRequest;
 import com.smhrd.entity.Company;
 import com.smhrd.entity.KakaoUserInfoResponseDto;
 import com.smhrd.entity.Member;
+import com.smhrd.mapper.BoardMapper;
 import com.smhrd.mapper.MemberMapper;
 import com.smhrd.service.KakaoService;
 
@@ -37,6 +41,10 @@ public class MemberController {
 
 	@Autowired
 	private MemberMapper memberMapper;
+	
+	@Autowired
+	private BoardMapper boardMapper;
+	
 	
 	@Autowired
 	private final KakaoService kakaoService;
@@ -118,6 +126,31 @@ public class MemberController {
 		// return "member/oauth";
 	    return new ResponseEntity<>(HttpStatus.OK);
 	}
+	
+	
+	
+	// 모든 회원정보 list불러오기.
+	@GetMapping("/memberall.do")
+	public List<Member> memberAll(){
+		System.out.println("[모든 회원정보 가져오기]");
+		
+		List<Member> memberAllList = boardMapper.getMemberAll();
+		System.out.println(memberAllList);
+		
+		return memberAllList;
+	}
+	
+	
+	// 회원정보 auth 업데이트 기능.
+//	@PutMapping("/memberauthUpdate.do")
+//	public void boardUpdate(@RequestParam String boolean) { // idx, title, content
+//		mapper.boardUpdate(board);
+//	}
+//	
+	
+	
+	
+	
 	
 	
 	// 회원가입 페이지로 이동 /joinForm.do

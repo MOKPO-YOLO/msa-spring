@@ -9,7 +9,7 @@ xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/
 	<!-- bean : 객체를 생성하는 태그 -->
 	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
 		<property name="driverClassName" value="oracle.jdbc.OracleDriver"/>
-		<property name="jdbcUrl" value="jdbc:oracle:thin:@//project-db-campus.smhrd.com:1523/xe"/>
+		<property name="jdbcUrl" value="jdbc:oracle:thin:@//project-db-cgi.smhrd.com:1524/xe"/>
 		<property name="username" value="yoloray"/>
 		<property name="password" value="yoloray1234"/>
 	</bean>
