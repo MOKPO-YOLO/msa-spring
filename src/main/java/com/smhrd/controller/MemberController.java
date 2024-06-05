@@ -22,6 +22,7 @@ import com.oreilly.servlet.MultipartRequest;
 import com.smhrd.entity.Company;
 import com.smhrd.entity.KakaoUserInfoResponseDto;
 import com.smhrd.entity.Member;
+import com.smhrd.entity.Path;
 import com.smhrd.mapper.BoardMapper;
 import com.smhrd.mapper.MemberMapper;
 import com.smhrd.service.KakaoService;
@@ -44,6 +45,8 @@ public class MemberController {
 	
 	@Autowired
 	private BoardMapper boardMapper;
+	
+
 	
 	
 	@Autowired
@@ -80,24 +83,8 @@ public class MemberController {
 //		return "http://localhost:3000/admin/index";
 //	}
 
-	
-	// 로그인 기능 /member/login.do
-	@GetMapping("/member/login.do")
-	public String login(@RequestParam("compnum") String IDENTIFI_ID, HttpSession session) {
-		System.out.println(IDENTIFI_ID);
-		Company loginMem = memberMapper.login(IDENTIFI_ID);
-		
-		if(loginMem == null) {
-			// 로그인 실패
-			return "false";
-		}else {
-			// 로그인 성공
-			session.setAttribute("mem", loginMem);
-			return "ture";  // react메인 페이지 path경로 리턴함.
-		}
-		
-	}
-	
+
+
 	
 	// 로그인 페이지로 이동 /loginForm.do
 	@GetMapping("/loginForm.do")
@@ -160,18 +147,18 @@ public class MemberController {
 	}
 
 	// 아이디 중복체크 기능 /idCheck.do
-	@GetMapping("/idCheck.do")
-	public @ResponseBody int idCheck(@RequestParam("memId") String memId) {
-		Member mem = memberMapper.getMember(memId);
-		// mem = null -> 사용 가능한 아이디 -> 1
-		// mem != null -> 사용 불가능한 아이디 -> 0
-
-		if (mem != null) {
-			return 0;
-		} else {
-			return 1;
-		}
-	}
+//	@GetMapping("/idCheck.do")
+//	public @ResponseBody int idCheck(@RequestParam("memId") String memId) {
+//		Member mem = memberMapper.getMember(memId);
+//		// mem = null -> 사용 가능한 아이디 -> 1
+//		// mem != null -> 사용 불가능한 아이디 -> 0
+//
+//		if (mem != null) {
+//			
+//		} else {
+//			return "/index";
+//		}
+//	}
 
 //	// 회원가입 기능 /join.do
 //	@PostMapping("/join.do")

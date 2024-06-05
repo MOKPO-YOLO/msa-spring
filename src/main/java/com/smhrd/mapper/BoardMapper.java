@@ -44,6 +44,8 @@ public interface BoardMapper {
    public TodayYN gettodayN(String today);
    
    
+   // 해당 유저의 이상탐지기록 :탐지된품목 번호로 탐지(DETECTION)테이블과 품목이름 결합하여 출력하는 기능.
+   public List<Detection> detectionCombinationType(String memID);
    
    
    

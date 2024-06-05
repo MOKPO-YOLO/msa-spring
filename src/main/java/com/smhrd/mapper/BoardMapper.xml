@@ -67,6 +67,13 @@
    </select>
    
    
+   <!-- 해당 유저의 이상탐지기록 :탐지된품목 번호로 탐지(DETECTION)테이블과 품목이름 결합하여 출력하는 기능. -->
+   <select id="detectionCombinationType" parameterType="String" resultType="com.smhrd.entity.Detection">
+      SELECT TYPE_NAME_ENG,DETECTION_IDX,MEMBER_ID,DETECTION_DATE,DETECTION_FILE
+	  FROM TYPE A, DETECTION B
+	  WHERE A.TYPE_NUM(+) = B.TYPE_NUM AND MEMBER_ID= 'test1'
+   </select>
+   
    
    
    

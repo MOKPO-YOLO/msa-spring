@@ -67,8 +67,7 @@ public class AnalyzeRestController {
 			// DB INSET
 			mapper.workloadInsert(workloadDto);
 		}
-		
-		
+				
 		
 		
 		// 실시간 분석 - 위해물품 탐지시 stop 일어난뒤 DB(DETECTION, WORKLOAD)테이들에 동시에 insert 기능
@@ -90,6 +89,19 @@ public class AnalyzeRestController {
 		
 		
 		
+		// 해당 유저의 이상탐지기록 :탐지된품목 번호로 탐지(DETECTION)테이블과 품목이름 결합하여 출력하는 기능.
+		@GetMapping("/combinationType") //  /detection/combinationType
+		public List<Detection> detectionCombinationType(HttpSession session){
+			System.out.println("[유저 이상탐지 TYPE결합된 ALL list]");
+			// 로그인된 회원의 사번을 memberDto의 MEMBER_ID에 넣어줌.
+			Company loginMem = (Company) session.getAttribute("mem");
+			memberDto.setMEMBER_ID(loginMem.getIDENTIFI_ID());
+			
+			List<Detection> CombinationTypeAll = mapper.detectionCombinationType(memberDto.getMEMBER_ID());
+			System.out.println(CombinationTypeAll);
+			return CombinationTypeAll;
+		}
+				 
 		
 		
 	
