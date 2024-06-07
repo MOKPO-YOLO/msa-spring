@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smhrd.mapper.BoardMapper">
+
+    <!--  공지사항 전체보기 -->
+   <select id="noticeList" resultType="com.smhrd.entity.Notice">
+      SELECT * FROM NOTICE ORDER BY NOTICE_AT DESC
+   </select>
+   
+   <!-- 위해물품 월별 합산 전체 작업량보기 -->
+   <select id="workloadList" resultType="com.smhrd.entity.MonthlySum">
+      SELECT
+          TO_CHAR(WORK_AT, 'MM') AS month,
+          COUNT(*) AS total_y
+      FROM WORKLOAD
+      WHERE WORK_PRESENCE = 'Y'
+      GROUP BY TO_CHAR(WORK_AT, 'MM')
+   </select>
+   
+   <!-- Detection테이블데이터로 알림사항 전체보기 -->
+   <select id="detectionalarmList" resultType="com.smhrd.entity.Detection">
+      SELECT * FROM DETECTION 
+        ORDER BY DETECTION_DATE DESC
+   </select>
+   
+   
+   <!-- 모든 회원정보 list불러오기. -->
+   <select id="getMemberAll" resultType="com.smhrd.entity.Member">
+      SELECT * FROM MEMBER 
+        ORDER BY JOINED_AT DESC
+   </select>
+   
+      
+   <!-- 실시간 분석 - 위해물품 탐지시 stop 일어난뒤 DB Detection테이블에 insert 기능 -->
+   <insert id="detectionInsert" parameterType="com.smhrd.entity.Detection">
+      INSERT INTO DETECTION(DETECTION_IDX,MEMBER_ID,DETECTION_NAME,DETECTION_FILE)
+      VALUES(#{DETECTION_IDX},#{MEMBER_ID},#{DETECTION_NAME},#{DETECTION_FILE})
+   </insert>
+   
+   <!-- 실시간 분석 - 위해물품 탐지시 stop 일어난뒤 DB Workload테이블에 insert 기능 -->
+   <insert id="workloadInsert" parameterType="com.smhrd.entity.Workload">
+      INSERT INTO WORKLOAD(MEMBER_ID,WORK_PRESENCE)
+      VALUES(#{MEMBER_ID},#{WORK_PRESENCE})
+   </insert>
+   
+   
+   <!-- 금일 오늘 날짜 불러오기. -->
+   <select id="getToday" resultType="com.smhrd.entity.TodayYN">
+      SELECT TO_CHAR(SYSDATE, 'YYYY-MM-DD') AS today
+      FROM DUAL
+   </select>
+   
+   <!-- 금일(오늘) Y의 총갯수 가져오기 -->
+   <select id="gettodayY" parameterType="String" resultType="com.smhrd.entity.TodayYN">
+      SELECT COUNT(WORK_PRESENCE) AS TODAY_Y
+      FROM WORKLOAD
+      WHERE TO_CHAR(WORK_AT, 'YYYY-MM-DD') =#{today}
+      AND work_presence = 'Y'
+   </select>
+   
+   <!-- 금일(오늘) N의 총갯수 가져오기 -->
+   <select id="gettodayN" parameterType="String" resultType="com.smhrd.entity.TodayYN">
+      SELECT COUNT(WORK_PRESENCE) AS TODAY_N
+      FROM WORKLOAD
+      WHERE TO_CHAR(WORK_AT, 'YYYY-MM-DD') =#{today}
+      AND work_presence = 'N'
+   </select>
+   
+   
+   <!-- 해당 유저의 이상탐지기록 :탐지된품목 번호로 탐지(DETECTION)테이블과 품목이름 결합하여 출력하는 기능. -->
+   <select id="detectionCombinationType" parameterType="String" resultType="com.smhrd.entity.Detection">
+      SELECT TYPE_NAME_ENG,DETECTION_IDX,MEMBER_ID,DETECTION_DATE,DETECTION_FILE
+	  FROM TYPE A, DETECTION B
+	  WHERE A.TYPE_NUM(+) = B.TYPE_NUM AND MEMBER_ID= 'test1'
+   </select>
+   
+   
+   
+   
+   
+   
+   <delete id="boardDelete" parameterType="int">
+      DELETE FROM BOARD WHERE IDX = #{idx}
+   </delete>
+   
+   <update id="boardUpdate" parameterType="com.smhrd.entity.Board">
+      UPDATE BOARD SET TITLE=#{title}, CONTENT=#{content} WHERE IDX=#{idx}
+   </update>
+
+   <update id="boardCount" parameterType="int">
+      UPDATE BOARD SET COUNT=COUNT+1 WHERE IDX=#{idx}
+   </update>
+
+
+</mapper>
