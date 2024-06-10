@@ -30,7 +30,7 @@ const MemberManagement = () => {
   };
 
   const handleActionClick = (id) => {
-    // 버튼 클릭 로직을 여기에 추가
+    // 버튼 클릭 로직을 여기에 추가 fdddd
     console.log(`Button clicked for id: ${id}`);
   };
 
