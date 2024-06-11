@@ -4,14 +4,12 @@ import { Card, Container, Row, Col, Button, Input, ListGroup, ListGroupItem, Dro
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faTimes } from '@fortawesome/free-solid-svg-icons';
 import MapsHeader from "components/Headers/MapsHeader";
+import { useLocation } from 'react-router-dom';
 
 const Maps = () => {
-  const detectionData = useSelector((state) => state.sendDetection);
-  const [localDetectionData, setLocalDetectionData] = useState(detectionData);
-
-  useEffect(() => {
-    setLocalDetectionData(detectionData);
-  }, [detectionData]);
+  const location = useLocation();
+  const { item, detectionTime } = location.state || {};
+  const [localDetectionData, setLocalDetectionData] = useState(item ? { name: item.name, img: item.img, time: detectionTime } : {});
 
   return (
     <>
@@ -36,6 +34,16 @@ const MapWrapper = (props) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [selectedModel, setSelectedModel] = useState(null);
   const fileInputRef = useRef(null);
+
+  useEffect(() => {
+    if (props.detectionData?.img) {
+      const newItem = {
+        name: `전송된 이미지: ${props.detectionData.name}`,
+        src: props.detectionData.img,
+      };
+      setDetectionList(prevList => [...prevList, newItem]);
+    }
+  }, [props.detectionData]);
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
