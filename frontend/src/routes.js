@@ -23,6 +23,8 @@ import Login from "views/examples/Login.js";
 import Tables from "views/examples/Tables.js";
 import Icons from "views/examples/Icons.js";
 import { SassColor } from "sass";
+import Admin from "layouts/Admin";
+import Admin_post from "views/examples/Admin_post.js"; 
 
 // 사이드바 생성
 
@@ -48,14 +50,6 @@ var routes = [
     component: <Maps />,
     layout: "/admin",
   },
-
-  { 
-    path: "/user-profile",
-    name: "회원관리",
-    icon: "ni ni-single-02 text-yellow",
-    component: <Profile />,
-    layout: "/admin",
-  },
   { 
     path: "/tables",
     name: "공지사항",
@@ -70,13 +64,28 @@ var routes = [
     component: <Login />,
     layout: "/auth",
   },
-  // { 회원가입
+  { 
+    path: "/user-profile",
+    name: "회원관리",
+    icon: "ni ni-single-02 text-yellow",
+    component: <Profile />,
+    layout: "/admin",
+  },
+
+  // { 
   //   path: "/register",
   //   name: "Register",
   //   icon: "ni ni-circle-08 text-pink",
   //   component: <Register />,
   //   layout: "/auth",
   // },
-
+  {
+    path: "/admin-post",
+    name: "공지사항 작성",
+    icon: "ni ni-bullet-list-67 text-red",
+    component: <Admin_post/>,
+    layout: "/admin",
+  },
 ];
+
 export default routes;
