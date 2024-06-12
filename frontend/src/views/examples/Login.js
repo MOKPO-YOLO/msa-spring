@@ -1,22 +1,4 @@
-/*!
 
-=========================================================
-* Argon Dashboard React - v1.2.4
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/argon-dashboard-react
-* Copyright 2024 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/argon-dashboard-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
-
-// reactstrap components
 import {
   Button,
   Card,
@@ -31,127 +13,102 @@ import {
   Row,
   Col,
 } from "reactstrap";
+import { useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+
 
 const Login = () => {
+  let [inputRef, setinputRef] = useState('');
+  let inputCompanyRef = useRef(null);
+  const navigate = useNavigate();
+
+  console.log(inputCompanyRef.current);
+  // input사원번호 가져옴.
+
+  let compNUM = '';
+  let compnumChange = (e) => {
+    compNUM = e.target.value;
+  };
+  console.log(inputRef);
+
+  // 로그인기능 버튼
+  let loginButton = async () => {
+    console.log(compNUM);
+    try {
+      let { data } = await axios.get(`http://localhost:8081/controller/member/login?compnum=${compNUM}`);
+      console.log(data);
+
+      if (data.path == 'ok') {
+        alert("저장된 회원정보가 없으므로 새로 등록 되셨습니다.");
+      } else if (data.path == '/admin/index') {
+        alert("로그인 되셨습니다.");
+        navigate(`${data.path}`);
+      } else {
+        // 아직 권한 승인을 요청을 기다리는 중입니다.
+        alert(`${data.path}`);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+
+  };
+
+
   return (
     <>
       <Col lg="5" md="7">
         <Card className="bg-secondary shadow border-0">
-          <CardHeader className="bg-transparent pb-5">
-            <div className="text-muted text-center mt-2 mb-3">
-              <small>Sign in with</small>
-            </div>
-            <div className="btn-wrapper text-center">
-              <Button
-                className="btn-neutral btn-icon"
-                color="default"
-                href="#pablo"
-                onClick={(e) => e.preventDefault()}
-              >
-                <span className="btn-inner--icon">
-                  <img
-                    alt="..."
-                    src={
-                      require("../../assets/img/icons/common/github.svg")
-                        .default
-                    }
-                  />
-                </span>
-                <span className="btn-inner--text">Github</span>
-              </Button>
-              <Button
-                className="btn-neutral btn-icon"
-                color="default"
-                href="#pablo"
-                onClick={(e) => e.preventDefault()}
-              >
-                <span className="btn-inner--icon">
-                  <img
-                    alt="..."
-                    src={
-                      require("../../assets/img/icons/common/google.svg")
-                        .default
-                    }
-                  />
-                </span>
-                <span className="btn-inner--text">Google</span>
-              </Button>
-            </div>
-          </CardHeader>
+
           <CardBody className="px-lg-5 py-lg-5">
             <div className="text-center text-muted mb-4">
-              <small>Or sign in with credentials</small>
+              <small></small>
             </div>
-            <Form role="form">
+            <p>사번</p>
+            <Form action="http://localhost:8081/controller/login.do" method="post" >
               <FormGroup className="mb-3">
                 <InputGroup className="input-group-alternative">
                   <InputGroupAddon addonType="prepend">
                     <InputGroupText>
-                      <i className="ni ni-email-83" />
+                      <i className="fa fa-id-card" /> 
                     </InputGroupText>
                   </InputGroupAddon>
-                  <Input
-                    placeholder="Email"
-                    type="email"
+                  <Input id="compnum"
+                    ref={inputCompanyRef}
+                    placeholder="사원 번호를 입력하세요."
+                    type="text"
+                    //  name="IDENTIFI_ID"
                     autoComplete="new-email"
+                    onChange={compnumChange}
                   />
                 </InputGroup>
               </FormGroup>
-              <FormGroup>
-                <InputGroup className="input-group-alternative">
-                  <InputGroupAddon addonType="prepend">
-                    <InputGroupText>
-                      <i className="ni ni-lock-circle-open" />
-                    </InputGroupText>
-                  </InputGroupAddon>
-                  <Input
-                    placeholder="Password"
-                    type="password"
-                    autoComplete="new-password"
-                  />
-                </InputGroup>
-              </FormGroup>
-              <div className="custom-control custom-control-alternative custom-checkbox">
-                <input
-                  className="custom-control-input"
-                  id=" customCheckLogin"
-                  type="checkbox"
-                />
-                <label
-                  className="custom-control-label"
-                  htmlFor=" customCheckLogin"
-                >
-                  <span className="text-muted">Remember me</span>
-                </label>
+              <div className="text-center">
+                <Button className="my-4 btn-block" color="primary" type="button" onClick={loginButton}>
+                  로그인
+                </Button>
+
+              </div>
+              <div>
+                <p className="text-center">또는</p>
               </div>
               <div className="text-center">
-                <Button className="my-4" color="primary" type="button">
-                  Sign in
+                <Button
+                  className="btn-neutral btn-icon btn-block"
+                  color="default"
+                  onClick={(e) => e.preventDefault()}
+                  style={{ backgroundColor: "#FEE500", color: "#3c1e1e", border: "none" }}  // 노란색 배경과 글자 색상 변경
+                >
+                  <span className="btn-inner--icon">
+                
+                  </span>
+                  <span className="btn-inner--text">카카오 로그인</span>
                 </Button>
               </div>
+
             </Form>
           </CardBody>
         </Card>
-        <Row className="mt-3">
-          <Col xs="6">
-            <a
-              className="text-light"
-              href="#pablo"
-              onClick={(e) => e.preventDefault()}
-            >
-              <small>Forgot password?</small>
-            </a>
-          </Col>
-          <Col className="text-right" xs="6">
-            <a
-              className="text-light"
-              href="#pablo"
-              onClick={(e) => e.preventDefault()}
-            >
-              <small>Create new account</small>
-            </a>
-          </Col>
-        </Row>
       </Col>
     </>
   );

@@ -118,8 +118,11 @@ const Sidebar = (props) => {
         {/* Brand */}
         {logo ? (
           <NavbarBrand className="pt-0" {...navbarBrandProps} >
-            {/* 여기에 사이드바 로고 */}
-            YOLORAY 
+  <img 
+    alt="..."
+    src={require("../../assets/img/brand/yolologo.png")}
+    style={{ width: '100px', maxWidth: '300px', height: 'auto', maxHeight:'none' }}  
+  />
           </NavbarBrand>
         ) : null}
         {/* User */}

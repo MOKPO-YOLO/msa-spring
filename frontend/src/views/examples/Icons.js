@@ -20,6 +20,17 @@ import LiveHeader from "components/Headers/LiveHeader.js";
 import { useDispatch } from 'react-redux';
 import { sendDetectionData } from "store";
 import { useNavigate } from "react-router-dom";
+import detetct1 from "../../assets/img/yolo_img/KakaoTalk_20240612_143558875_01.png";
+import detetct2 from "../../assets/img/yolo_img/KakaoTalk_20240612_143558875_02.png";
+import detetct3 from "../../assets/img/yolo_img/KakaoTalk_20240612_143558875_03.png";
+import detetct4 from "../../assets/img/yolo_img/KakaoTalk_20240612_143558875_04.png";
+import detetct5 from "../../assets/img/yolo_img/KakaoTalk_20240612_143558875_05.png";
+import detetct6 from "../../assets/img/yolo_img/KakaoTalk_20240612_143558875_06.png";
+import detetct7 from "../../assets/img/yolo_img/KakaoTalk_20240612_143558875_07.png";
+import detetct8 from "../../assets/img/yolo_img/KakaoTalk_20240612_143558875_08.png";
+import detetct9 from "../../assets/img/yolo_img/KakaoTalk_20240612_143558875_09.png";
+import detetct10 from "../../assets/img/yolo_img/KakaoTalk_20240612_143558875_10.png";
+
 
 const Icons = () => {
   const [isForceStopModalOpen, setIsForceStopModalOpen] = useState(false);
@@ -31,29 +42,18 @@ const Icons = () => {
   const [isSlideshowRunning, setIsSlideshowRunning] = useState(true);
   const [detectedIndexes, setDetectedIndexes] = useState([]);
   const [slideData, setSlideData] = useState([
-    { img: 'https://miro.medium.com/v2/resize:fit:627/1*t73lHngAIii4mt98hBgzqA.png', name: "산" },
-    { img: 'https://pbs.twimg.com/media/CFatycaW8AA2fM9.jpg', name: "바다" },
-    { img: 'https://miro.medium.com/v2/resize:fit:627/1*t73lHngAIii4mt98hBgzqA.png', name: "논" },
-    { img: 'https://pbs.twimg.com/media/CFatycaW8AA2fM9.jpg', name: "서울" },
-    { img: 'https://pbs.twimg.com/media/CFatycaW8AA2fM9.jpg', name: "서울" },
-    { img: 'https://pbs.twimg.com/media/CFatycaW8AA2fM9.jpg', name: "서울" },
-    { img: 'https://pbs.twimg.com/media/CFatycaW8AA2fM9.jpg', name: "서울" },
-    { img: 'https://pbs.twimg.com/media/CFatycaW8AA2fM9.jpg', name: "서울" },
-    { img: 'https://pbs.twimg.com/media/CFatycaW8AA2fM9.jpg', name: "서울" },
-    { img: 'https://pbs.twimg.com/media/CFatycaW8AA2fM9.jpg', name: "서울" },
-    { img: 'https://pbs.twimg.com/media/CFatycaW8AA2fM9.jpg', name: "서울" },
-    { img: 'https://pbs.twimg.com/media/CFatycaW8AA2fM9.jpg', name: "서울" },
-    { img: 'https://pbs.twimg.com/media/CFatycaW8AA2fM9.jpg', name: "서울" },
-    { img: 'https://pbs.twimg.com/media/CFatycaW8AA2fM9.jpg', name: "서울" },
-    { img: 'https://pbs.twimg.com/media/CFatycaW8AA2fM9.jpg', name: "서울" },
-    { img: 'https://pbs.twimg.com/media/CFatycaW8AA2fM9.jpg', name: "서울" },
-    { img: 'https://pbs.twimg.com/media/CFatycaW8AA2fM9.jpg', name: "서울" },
-    { img: 'https://pbs.twimg.com/media/CFatycaW8AA2fM9.jpg', name: "서울" },
-    { img: 'https://pbs.twimg.com/media/CFatycaW8AA2fM9.jpg', name: "서울" },
-    { img: 'https://pbs.twimg.com/media/CFatycaW8AA2fM9.jpg', name: "서울" },
-    { img: 'https://pbs.twimg.com/media/CFatycaW8AA2fM9.jpg', name: "서울" },
-    { img: 'https://pbs.twimg.com/media/CFatycaW8AA2fM9.jpg', name: "서울" },
-    { img: 'https://pbs.twimg.com/media/CFatycaW8AA2fM9.jpg', name: "서울" }
+    { img: detetct1, name: "1" },
+    { img: detetct2, name: "2" },
+    { img: detetct3, name: "3" },
+    { img: detetct4, name: "4" },
+    { img: detetct5, name: "5" },
+    { img: detetct6, name: "6" },
+    { img: detetct7, name: "7" },
+    { img: detetct8, name: "8" },
+    { img: detetct9, name: "9" },
+    { img: detetct10, name: "10" },
+
+
   ]);
   const dispatch = useDispatch();
   const navigate = useNavigate();
