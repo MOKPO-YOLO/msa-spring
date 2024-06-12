@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.smhrd.entity.Board;
 import com.smhrd.entity.Company;
+import com.smhrd.entity.CreateNotice;
 import com.smhrd.entity.Detection;
 import com.smhrd.entity.Member;
 import com.smhrd.entity.MonthlySum;
@@ -45,7 +46,7 @@ public class BoardRestController {
       private BoardMapper mapper;
       
       @Autowired
-  	  private MemberMapper memberMapper;
+       private MemberMapper memberMapper;
    
       // 공지사항 전체보기
       @GetMapping("/all") //  /notice/all
@@ -56,7 +57,43 @@ public class BoardRestController {
          System.out.println(noticeList);
          return noticeList;
       }
+           
       
+     // 선택 공지사항 삭제하기
+     @DeleteMapping("/delete/{idx}") //  /notice/delete/{idx}
+     public List<Notice> boardDelete(@PathVariable("idx") int idx) {
+        System.out.println(idx);
+         mapper.boardDelete(idx);
+         // 삭제되고 새로 갱신된 공지사항 전체리스트 불러오기.
+         List<Notice> noticeList = mapper.noticeList();
+         return noticeList;
+     }
+      
+     
+     // 공지사항 글작성하기
+     @PostMapping("/new") //  /notice/new
+     public List<Notice> createNotice(@RequestBody CreateNotice newNotice) {
+         System.out.println(newNotice);
+         // new공지 insert함.
+         mapper.createNotice(newNotice);
+         
+         // 추가되고 새로 갱신된 공지사항 전체리스트 불러오기.
+         List<Notice> noticeList = mapper.noticeList();
+         return noticeList;
+     }
+     
+     
+	 // 공지사항 글수정하기
+     @PostMapping("/modify") //  /notice/modify
+     public List<Notice> modifyNotice(@RequestBody CreateNotice modify) {
+         System.out.println(modify);
+         // new공지 insert함.
+         mapper.modifyNotice(modify);
+         
+         // 추가되고 새로 갱신된 공지사항 전체리스트 불러오기.
+         List<Notice> noticeList = mapper.noticeList();
+         return noticeList;
+     }
       
       // 위해물품 월별합산 전체 작업량보기
       @GetMapping("/workloadall")  //  /notice/workloadall
@@ -93,11 +130,7 @@ public class BoardRestController {
 //         return board;
 //      }
 //
-//      // 게시글 삭제하기
-//      @DeleteMapping("/{idx}") // board/{idx}
-//      public void boardDelete(@PathVariable("idx") int idx) {
-//         mapper.boardDelete(idx);
-//      }
+
 //      
 //      // 게시글 수정하기
 //      @PutMapping("/update")

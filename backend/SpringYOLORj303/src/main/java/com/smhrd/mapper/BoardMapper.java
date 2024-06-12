@@ -4,6 +4,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.smhrd.entity.Board;
+import com.smhrd.entity.CreateNotice;
 import com.smhrd.entity.Detection;
 import com.smhrd.entity.Member;
 import com.smhrd.entity.MonthlySum;
@@ -47,15 +48,19 @@ public interface BoardMapper {
    // 해당 유저의 이상탐지기록 :탐지된품목 번호로 탐지(DETECTION)테이블과 품목이름 결합하여 출력하는 기능.
    public List<Detection> detectionCombinationType(String memID);
    
-   
-   
-   
-   
-   public Board boardContent(int idx);
-   
+   // 선택 공지사항 삭제하기
    public void boardDelete(int idx);
-
-   public void boardUpdate(Board vo);
+   
+   // 공지사항 글작성하기
+   public void createNotice(CreateNotice newNotice);
+   
+   // 공지사항 글수정하기
+   public void modifyNotice(CreateNotice modify);
+   
+   
+   
+   
+   public Board boardContent(int idx);  
 
    public void boardCount(int idx);
 
