@@ -116,16 +116,7 @@ public class MemberController {
 	
 	
 	
-	// 모든 회원정보 list불러오기.
-	@GetMapping("/memberall.do")
-	public List<Member> memberAll(){
-		System.out.println("[모든 회원정보 가져오기]");
-		
-		List<Member> memberAllList = boardMapper.getMemberAll();
-		System.out.println(memberAllList);
-		
-		return memberAllList;
-	}
+	
 	
 	
 	// 회원정보 auth 업데이트 기능.

@@ -3,31 +3,36 @@
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
 xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd">
-	<!-- Root Context: defines shared resources visible to all other web components -->
-	<!-- API(HikariCP) -->
-	
-	<!-- bean : 객체를 생성하는 태그 -->
-	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
-		<property name="driverClassName" value="oracle.jdbc.OracleDriver"/>
-		<property name="jdbcUrl" value="jdbc:oracle:thin:@//project-db-cgi.smhrd.com:1524/xe"/>
-		<property name="username" value="yoloray"/>
-		<property name="password" value="yoloray1234"/>
-	</bean>
-	
-	
-	<!-- HikariDataSource(Connection POOL을 만드는 역할을 한다) -->
-	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
-		<constructor-arg ref="hikariConfig" />
-	</bean>
-	
-	<!-- Mapper interface들을 메모리에 올리는 방법(scan) -->
-	<mybatis-spring:scan base-package="com.smhrd.mapper"/>
-	
-	<!-- BoardMapper interface의 구현클래스 생성
-	SqlSessionFactoryBean(SQL을 실행하는 API) -->
-	<bean class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="dataSource" ref="dataSource" />
-	</bean>
+   <!-- Root Context: defines shared resources visible to all other web components -->
+   <!-- API(HikariCP) -->
+   
+   <!-- bean : 객체를 생성하는 태그 -->
+   <bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+      <property name="driverClassName" value="oracle.jdbc.OracleDriver"/>
+      <property name="jdbcUrl" value="jdbc:oracle:thin:@//project-db-cgi.smhrd.com:1524/xe"/>
+      <property name="username" value="yoloray"/>
+      <property name="password" value="yoloray1234"/>
+   </bean>
+   
+   
+   <!-- HikariDataSource(Connection POOL을 만드는 역할을 한다) -->
+   <bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+      <constructor-arg ref="hikariConfig" />
+   </bean>
+   
+   <!-- request로 받은 객체를 해당하는 DTO에 자동으로 맵핑 해주는 용도를 빈으로 등록함. (생략해도 동작함.) 
+       그리고 jackson-databind 이 디펜던시 추가해야함.
+   -->
+   <bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper"/>
+   
+   <!-- Mapper interface들을 메모리에 올리는 방법(scan) -->
+   <mybatis-spring:scan base-package="com.smhrd.mapper"/>
+   
+   <!-- BoardMapper interface의 구현클래스 생성
+   SqlSessionFactoryBean(SQL을 실행하는 API) -->
+   <bean class="org.mybatis.spring.SqlSessionFactoryBean">
+      <property name="dataSource" ref="dataSource" />
+   </bean>
 </beans>
 
 

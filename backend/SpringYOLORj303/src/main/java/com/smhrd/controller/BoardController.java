@@ -43,16 +43,6 @@ public class BoardController {
 	}
 	
 		
-	// Spring 과 FastAPI 통신 테스트
-	@PostMapping("/springFastapi.do")
-	@ResponseBody 
-	public String sendToFastapi(@RequestBody SendToFastApiDto dto) throws JsonProcessingException {
-		// return "board/springTest"; // WEB-INF/views/board/springTest.jsp
-		
-		return fastApiService.sendToFastapi(dto);
-	}
-		
-	
 	
 	
 	

@@ -26,7 +26,7 @@ public interface BoardMapper {
    public List<Detection> detectionalarmList(); 
    
    // Detection테이블데이터로 알림사항 전체보기
-   public List<Member> getMemberAll(); 
+   public List<Member> getMemberAll();
 
    // 실시간 분석 - 위해물품 탐지시 stop 일어난뒤 DB Detection테이블에 insert 기능
    public void detectionInsert(Detection detec);

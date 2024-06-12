@@ -28,6 +28,10 @@ $(document).ready(function(){
 	}
 });
 	
+	
+	let sendFAST  
+	
+	
 </script>
 
 </head>
@@ -63,6 +67,7 @@ $(document).ready(function(){
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal" onclick="" >fastapi 전송</button>
 				</div>
 			</div>
 

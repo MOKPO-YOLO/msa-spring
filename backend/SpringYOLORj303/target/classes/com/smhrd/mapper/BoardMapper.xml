@@ -82,10 +82,7 @@
    <delete id="boardDelete" parameterType="int">
       DELETE FROM BOARD WHERE IDX = #{idx}
    </delete>
-   
-   <update id="boardUpdate" parameterType="com.smhrd.entity.Board">
-      UPDATE BOARD SET TITLE=#{title}, CONTENT=#{content} WHERE IDX=#{idx}
-   </update>
+      
 
    <update id="boardCount" parameterType="int">
       UPDATE BOARD SET COUNT=COUNT+1 WHERE IDX=#{idx}
