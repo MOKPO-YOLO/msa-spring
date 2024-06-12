@@ -25,7 +25,7 @@ import Icons from "views/examples/Icons.js";
 import { SassColor } from "sass";
 import Admin from "layouts/Admin";
 import Admin_post from "views/examples/Admin_post.js"; 
-
+import AdminModel from "views/examples/Admin_model";
 // 사이드바 생성
 
 var routes = [
@@ -86,6 +86,13 @@ var routes = [
     component: <Admin_post/>,
     layout: "/admin",
   },
+  {
+    path: "/admin/model-update",
+    name: "모델 업데이트",
+    icon: "ni ni-cloud-upload-96 text-blue",
+    component:< AdminModel />,
+    layout: "/admin",
+  }
 ];
 
 export default routes;
