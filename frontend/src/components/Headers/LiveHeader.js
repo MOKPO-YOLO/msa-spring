@@ -11,11 +11,9 @@ const LiveHeader = () => {
   });
 
   useEffect(() => {
-    // localStorage에서 저장된 시작 시간을 가져옴
     const storedStartTime = localStorage.getItem("startTime");
     let startTime = storedStartTime ? new Date(storedStartTime) : new Date();
     
-    // 페이지 새로고침 시에도 시간 누적
     if (!storedStartTime) {
       localStorage.setItem("startTime", startTime);
     }
@@ -39,10 +37,16 @@ const LiveHeader = () => {
   }, []);
 
   const cardStyle = {
-    height: '200px', // 통일된 높이
+    height: '100%', // 통일된 높이
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
+  };
+
+  const chartContainerStyle = {
+    position: 'relative',
+    width: '100%',
+    height: '150px',
   };
 
   return (
@@ -52,9 +56,9 @@ const LiveHeader = () => {
           <div className="header-body">
             {/* Card stats */}
             <Row>
-              <Col lg="3" xl="3">
-                <Card className="card-stats mb-4 mb-xl-0" style={cardStyle}>
-                  <CardBody>
+              <Col lg="3" md="6" style={{marginBottom:'15px'}}>
+                <Card className="card-stats mb-4 mb-xl-0" style={cardStyle}  >
+                  <CardBody >
                     <Row>
                       <div className="col">
                         <CardTitle
@@ -66,6 +70,7 @@ const LiveHeader = () => {
                         <span className="h2 font-weight-bold mb-0">
                           350,897 건
                         </span>
+                        
                       </div>
                       <Col className="col-auto">
                         <div className="icon icon-shape bg-danger text-white rounded-circle shadow">
@@ -82,7 +87,7 @@ const LiveHeader = () => {
                   </CardBody>
                 </Card>
               </Col>
-              <Col lg="3" xl="3">
+              <Col lg="3" md="6" style={{marginBottom:'15px'}}>
                 <Card className="card-stats mb-4 mb-xl-0" style={cardStyle}>
                   <CardBody>
                     <Row>
@@ -112,7 +117,7 @@ const LiveHeader = () => {
                   </CardBody>
                 </Card>
               </Col>
-              <Col lg="3" xl="3">
+              <Col lg="3" md="6" style={{marginBottom:'15px'}}>
                 <Card className="card-stats mb-4 mb-xl-0" style={cardStyle}>
                   <CardBody>
                     <Row>
@@ -140,7 +145,7 @@ const LiveHeader = () => {
                   </CardBody>
                 </Card>
               </Col>
-              <Col lg="3" xl="3">
+              <Col lg="3" md="6" style={{marginBottom:'15px'}}>
                 <Card className="card-stats mb-4 mb-xl-0" style={cardStyle}>
                   <CardBody>
                     <Row>
@@ -149,24 +154,22 @@ const LiveHeader = () => {
                           tag="h5"
                           className="text-uppercase text-muted mb-0"
                         >
-                         위해물품 탐지 비율
+                          위해물품 탐지 비율
                         </CardTitle>
                         <div className="d-flex justify-content-between align-items-center">
-                        
-                          <div className="chart" style={{ height: '150px', width: '300px' }}>
+                          <div className="chart" style={chartContainerStyle}>
                             <Doughnut
                               data={chartExample2.data}
                               options={{
                                 ...chartExample2.options,
+                                responsive: true,
+                                maintainAspectRatio: false,
                                 plugins: {
-                                  ...chartExample2.options.plugins,
                                   legend: {
                                     display: false, // 레이블을 숨김
                                   },
                                 },
                               }}
-                              height={150}
-                              width={300}
                             />
                           </div>
                         </div>
