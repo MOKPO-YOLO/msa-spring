@@ -33,7 +33,7 @@ const Footer = () => {
               rel="noopener noreferrer"
               target="_blank"
             >
-              YORORAY
+              YOLORAY
             </a>
           </div>
         </Col>

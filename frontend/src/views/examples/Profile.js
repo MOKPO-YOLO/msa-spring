@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Card,
@@ -11,10 +11,15 @@ import {
   Table,
   Pagination,
   PaginationItem,
-  PaginationLink
+  PaginationLink,
+  Modal,           // 모달 추가
+  ModalHeader,     // 모달 추가
+  ModalBody,       // 모달 추가
+  ModalFooter      // 모달 추가
 } from "reactstrap";
 // core components
 import UserHeader from "components/Headers/UserHeader.js";
+import axios from "axios";
 
 const MemberManagement = () => {
   const [data, setData] = useState([
@@ -24,14 +29,77 @@ const MemberManagement = () => {
     { id: 4, name: 'aaa141', date: '2024.05.26', status: '가입 완료', role: '사용자', user: 'aaa121', process: '진행중', action: '강제 종료' },
     { id: 5, name: 'aaa151', date: '2024.05.25', status: '가입 완료', role: '사용자', user: 'aaa141', process: '진행중', action: '강제 종료' },
   ]);
+  const [userList, setUserList] = useState([{ identifi_ID: '333356', member_NAME: null, member_AUTH: 'TRUE', member_STATUS: 'FALSE', joined_AT: '2024-06-10 22:54:32', process: "STOP", role: "사용자", status: "가입완료", action: "재시작" }]);
+  const [AuthUpdateArr, setAuthUpdateArr] = useState([]);
+  const [role, setRole] = useState("");
+  const [confirmModalOpen, setConfirmModalOpen] = useState(false); // 확인 모달 상태 추가
+  const [modalAction, setModalAction] = useState(""); // 모달 액션 상태 추가
 
-  const handleRoleChange = (id, value) => {
-    setData(data.map(item => item.id === id ? { ...item, role: value } : item));
+  const userDtoAddkey = (data) => {
+    const newdata = data.map((item, i) => {
+      item['status'] = item.member_AUTH == "TRUE" ? "가입완료" : "승인 대기";
+      item['role'] = item.member_AUTH == "TRUE" ? "사용자" : "승인";
+      item['process'] = item.member_STATUS == "TRUE" ? "진행중" : "STOP";
+      item['action'] = item.member_STATUS == "TRUE" ? "강제종료" : "재시작";
+
+      return item;
+    });
+
+    console.log(newdata);
+    setUserList(newdata);
   };
 
-  const handleActionClick = (id) => {
-    // 버튼 클릭 로직을 여기에 추가
-    console.log(`Button clicked for id: ${id}`);
+  // 모든 유저정보 호출.
+  const getuserAll = async () => {
+    try {
+      const { data } = await axios.get('http://localhost:8081/controller/member/all');
+      console.log(data);
+      userDtoAddkey(data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    getuserAll();
+  }, []);
+
+  let obj = {};
+  // 회원들 가입 승인 업데이트 정보 담김.
+  const handleRoleChange = (identifi_ID, value) => {
+    console.log(value);
+    if (obj['identifiID']) { obj['memberAUTH'] = value; }
+    else { obj = { identifiID: identifi_ID, memberAUTH: value } }
+
+    let tempArr = [...AuthUpdateArr, obj];
+    console.log(tempArr);
+    setAuthUpdateArr(tempArr);
+  };
+
+  const handleActionClick = (id, action) => {
+    setModalAction(action); // 모달 액션 설정
+    setConfirmModalOpen(true); // 확인 모달 열기
+  };
+
+  const confirmAction = () => {
+    setConfirmModalOpen(false); // 확인 모달 닫기
+    if (modalAction === '삭제') {
+      // 삭제 로직 추가
+      console.log("삭제 작업 수행");
+    } else if (modalAction === '업데이트') {
+      sendUpdate(); // 업데이트 로직 추가
+    }
+  };
+
+  const sendUpdate = async () => {
+    console.log(AuthUpdateArr);
+    try {
+      const { data } = await axios.post('http://localhost:8081/controller/member/authUpdate', { authupArr: AuthUpdateArr });
+      userDtoAddkey(data);
+      alert('요청하신 회원님의 권한이 업데이트 되었습니다.');
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
@@ -52,7 +120,7 @@ const MemberManagement = () => {
                 <Table className="align-items-center table-flush" responsive>
                   <thead className="thead-light">
                     <tr>
-                      <th scope="col"><Input type="checkbox" /></th>
+                      {/* <th scope="col"></th> */}
                       <th scope="col">사번</th>
                       <th scope="col">등록 일자</th>
                       <th scope="col">가입 여부</th>
@@ -63,28 +131,33 @@ const MemberManagement = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {data.map(item => (
-                      <tr key={item.id}>
-                        <td><Input type="checkbox" /></td>
-                        <td>{item.name}</td>
-                        <td>{item.date}</td>
+                    {userList.map((item, i) => (
+                      <tr key={i}>
+                        {/* <td><Input type="checkbox" /></td> */}
+                        <td>{item.identifi_ID}</td>
+                        <td>{item.joined_AT}</td>
                         <td>{item.status}</td>
                         <td>
-                          <Input type="select" value={item.role} onChange={(e) => handleRoleChange(item.id, e.target.value)}>
-                            <option>승인</option>
-                            <option>사용자</option>
+                          <Input type="select" name="MEMBER_AUTH" value={role} onChange={(e) => {
+                            setRole(e.target.value);
+                            handleRoleChange(item.identifi_ID, e.target.value);
+                          }}>
+                            <option value={"TRUE"}>승인</option>
+                            <option value={"TRUE"}>승인</option>
+                            <option value={"TRUE"}>사용자</option>
                           </Input>
                         </td>
-                        <td>{item.user}</td>
+                        <td>{item.member_NAME}</td>
                         <td>
                           <span style={{ color: item.process === 'STOP' ? 'red' : 'blue', fontWeight: item.process === 'STOP' ? 'bold' : 'normal' }}>
                             {item.process}
                           </span>
                         </td>
                         <td>
-                          <Button color={item.action === '재시작' ? 'primary' : 'danger'} onClick={() => handleActionClick(item.id)}>
+                          <Button color={item.action === '재시작' ? 'primary' : 'danger'} onClick={() => handleActionClick(item.id, item.action)}>
                             {item.action}
                           </Button>
+                          <Button color="danger" style={{ marginRight: '10px' }} onClick={() => handleActionClick(item.id, '삭제')}>삭제</Button>
                         </td>
                       </tr>
                     ))}
@@ -93,9 +166,6 @@ const MemberManagement = () => {
                 <Row className="mt-3">
                   <Col className="d-flex justify-content-between align-items-center">
                     <Pagination>
-                      <PaginationItem disabled>
-                        <PaginationLink first href="#" />
-                      </PaginationItem>
                       <PaginationItem disabled>
                         <PaginationLink previous href="#" />
                       </PaginationItem>
@@ -107,13 +177,9 @@ const MemberManagement = () => {
                       <PaginationItem disabled>
                         <PaginationLink next href="#" />
                       </PaginationItem>
-                      <PaginationItem disabled>
-                        <PaginationLink last href="#" />
-                      </PaginationItem>
                     </Pagination>
                     <div>
-                      <Button color="danger" style={{ marginRight: '10px' }}>삭제</Button>
-                      <Button color="primary">등록</Button>
+                      <Button color="primary" type="button" onClick={() => handleActionClick(null, '업데이트')}>업데이트</Button>
                     </div>
                   </Col>
                 </Row>
@@ -122,6 +188,18 @@ const MemberManagement = () => {
           </Col>
         </Row>
       </Container>
+
+      {/* 확인 모달 추가 */}
+      <Modal isOpen={confirmModalOpen} toggle={() => setConfirmModalOpen(false)}>
+        <ModalHeader toggle={() => setConfirmModalOpen(false)}>확인</ModalHeader>
+        <ModalBody>
+          정말로 {modalAction} 하시겠습니까?
+        </ModalBody>
+        <ModalFooter>
+          <Button color="danger" onClick={confirmAction}>{modalAction}</Button>
+          <Button color="secondary" onClick={() => setConfirmModalOpen(false)}>취소</Button>
+        </ModalFooter>
+      </Modal>
     </>
   );
 };

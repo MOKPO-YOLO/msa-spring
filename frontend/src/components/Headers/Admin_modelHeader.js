@@ -1,7 +1,7 @@
 
 import { Button, Container, Row, Col } from "reactstrap";
 
-const UserHeader = () => {
+const Admin_modelHeader = () => {
   return (
     <>
       <div
@@ -20,7 +20,7 @@ const UserHeader = () => {
         <Container className="d-flex align-items-center" fluid>
           <Row>
             <Col>
-              <h1 className="display-2 text-white">회원관리</h1>
+              <h1 className="display-2 text-white">모델 업데이트</h1>
             </Col>
           </Row>
         </Container>
@@ -29,4 +29,4 @@ const UserHeader = () => {
   );
 };
 
-export default UserHeader;
+export default Admin_modelHeader;

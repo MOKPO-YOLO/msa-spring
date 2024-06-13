@@ -4,14 +4,12 @@ import { Card, Container, Row, Col, Button, Input, ListGroup, ListGroupItem, Dro
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faTimes } from '@fortawesome/free-solid-svg-icons';
 import MapsHeader from "components/Headers/MapsHeader";
+import { useLocation } from 'react-router-dom';
 
 const Maps = () => {
-  const detectionData = useSelector((state) => state.sendDetection);
-  const [localDetectionData, setLocalDetectionData] = useState(detectionData);
-
-  useEffect(() => {
-    setLocalDetectionData(detectionData);
-  }, [detectionData]);
+  const location = useLocation();
+  const { item, detectionTime } = location.state || {};
+  const [localDetectionData, setLocalDetectionData] = useState(item ? { name: item.name, img: item.img, time: detectionTime } : {});
 
   return (
     <>
@@ -36,6 +34,16 @@ const MapWrapper = (props) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [selectedModel, setSelectedModel] = useState(null);
   const fileInputRef = useRef(null);
+
+  useEffect(() => {
+    if (props.detectionData?.img) {
+      const newItem = {
+        name: `전송된 이미지: ${props.detectionData.name}`,
+        src: props.detectionData.img,
+      };
+      setDetectionList(prevList => [...prevList, newItem]);
+    }
+  }, [props.detectionData]);
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
@@ -117,7 +125,8 @@ const MapWrapper = (props) => {
                 style={{
                   width: '100%',
                   height: '100%',
-                  objectFit: 'cover' // 이미지가 컨테이너를 가득 채우도록 조정
+                  objectFit: 'contain', // 이미지가 컨테이너를 가득 채우지 않도록 조정
+                  maxHeight: '680px' // 최대 높이 설정
                 }}
               />
               <Button color="danger" size="sm" onClick={handleCloseImage} style={{ position: 'absolute', top: '10px', right: '10px' }}>
@@ -139,8 +148,9 @@ const MapWrapper = (props) => {
       </Col>
       <Col md="4">
         <div style={{ height: '100%', padding: '20px', boxSizing: 'border-box', borderLeft: '0.5px solid ', borderColor: "gray" }}>
-          <h3>위해물품 탐지 리스트
-            <Dropdown isOpen={dropdownOpen} toggle={toggleDropdown} style={{ marginLeft: 150 }}>
+          <div className="d-flex justify-content-between align-items-center mb-3">
+            <h3 className="mb-0">위해물품 탐지 리스트</h3>
+            <Dropdown isOpen={dropdownOpen} toggle={toggleDropdown}>
               <DropdownToggle caret>
                 {selectedModel ? selectedModel : "모델 선택"}
               </DropdownToggle>
@@ -151,16 +161,16 @@ const MapWrapper = (props) => {
                 <DropdownItem onClick={() => handleModelSelect("모델 4")}>모델 4</DropdownItem>
               </DropdownMenu>
             </Dropdown>
-          </h3>
+          </div>
           
           <Button color="primary" onClick={handleDownloadCSV} style={{ marginTop: '10px' }}>
             CSV 다운로드
           </Button>
 
-          <h3 style={{  marginTop : '150PX'}}>내가 업로드한 사진</h3>
+          <h3 style={{  marginTop : '150px'}}>내가 업로드한 사진</h3>
           <ListGroup>
             {detectionList.map((item, index) => (
-              <ListGroupItem key={index} onClick={() => handleListItemClick(item)} style={{ cursor: 'pointer' , marginTop : '10PX'}}>
+              <ListGroupItem key={index} onClick={() => handleListItemClick(item)} style={{ cursor: 'pointer' , marginTop : '10px'}}>
                 {item.name}
               </ListGroupItem>
             ))}
